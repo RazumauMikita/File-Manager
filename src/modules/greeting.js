@@ -1,4 +1,4 @@
-import { argv, stdout } from "node:process";
+import { argv, stdout, cwd } from "node:process";
 
 export const getUsername = () => {
   const args = argv.slice(2);
@@ -24,6 +24,6 @@ export const showGreetingPhrase = (username) => {
 export const showGoodbyePhrase = (username) =>
   stdout.write(`Thank you for using File Manager, ${username}, goodbye!\n`);
 
-export const showCurrentDirectory = (workingDirectory) => {
-  stdout.write(`You are currently in ${workingDirectory}`);
+export const showCurrentDirectory = () => {
+  stdout.write(`You are currently in ${cwd()}\n`);
 };
