@@ -1,5 +1,10 @@
-import { argv, stdout, cwd, chdir } from "node:process";
+import { stdout, cwd, chdir } from "node:process";
 import { readdir } from "node:fs/promises";
+import { homedir } from "node:os";
+
+export const goToHomeDir = () => {
+  chdir(homedir());
+};
 
 export const goUpper = () => {
   const [, folders] = cwd().split(":");

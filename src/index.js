@@ -11,9 +11,18 @@ import {
 
 import {
   goToDedicated,
+  goToHomeDir,
   goUpper,
   printListOfFiles,
 } from "./modules/directory.js";
+import {
+  copyFile,
+  createEmptyFile,
+  moveFile,
+  printFileContent,
+  removeFile,
+  renameFile,
+} from "./modules/readFile.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -21,6 +30,7 @@ const __dirname = path.dirname(__filename);
 const USERNAME = getUsername();
 
 showGreetingPhrase(USERNAME);
+goToHomeDir();
 showCurrentDirectory();
 
 stdin.on("data", (data) => {
@@ -54,5 +64,25 @@ stdin.on("data", (data) => {
 
   if (command === "ls") {
     printListOfFiles();
+  }
+
+  if (command === "cat") {
+    printFileContent(arg1);
+  }
+
+  if (command === "add") {
+    createEmptyFile(arg1);
+  }
+  if (command === "rn") {
+    renameFile(arg1, arg2);
+  }
+  if (command === "rm") {
+    removeFile(arg1);
+  }
+  if (command === "cp") {
+    copyFile(arg1, arg2);
+  }
+  if (command === "mv") {
+    moveFile(arg1, arg2);
   }
 });
