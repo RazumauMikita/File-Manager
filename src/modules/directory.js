@@ -1,4 +1,5 @@
 import { argv, stdout, cwd, chdir } from "node:process";
+import { readdir } from "node:fs/promises";
 
 export const goUpper = () => {
   const [, folders] = cwd().split(":");
@@ -22,4 +23,31 @@ export const goToDedicated = (path) => {
   } catch {
     stdout.write(`Error: Incorrect path!\n${path}\n`);
   }
+};
+
+export const printListOfFiles = async () => {
+  const files = await readdir(cwd(), { withFileTypes: true });
+  for (let file of files) {
+    file.type = file.isFile() ? "file" : "directory";
+  }
+  files
+    .sort((a, b) => {
+      if (a.name.toLowerCase() < b.name.toLowerCase()) {
+        return -1;
+      }
+      if (a.name.toLowerCase() > b.name.toLowerCase()) {
+        return 1;
+      }
+      return 0;
+    })
+    .sort((a, b) => {
+      if (a.type === "directory" && b.type === "file") {
+        return -1;
+      }
+      if (a.type === "file" && b.type === "directory") {
+        return 1;
+      }
+      return 0;
+    });
+  console.table(files, ["name", "type"]);
 };

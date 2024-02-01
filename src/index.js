@@ -9,7 +9,11 @@ import {
   showCurrentDirectory,
 } from "./modules/greeting.js";
 
-import { goToDedicated, goUpper } from "./modules/directory.js";
+import {
+  goToDedicated,
+  goUpper,
+  printListOfFiles,
+} from "./modules/directory.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -46,5 +50,9 @@ stdin.on("data", (data) => {
   if (command === "cd") {
     goToDedicated(arg1);
     showCurrentDirectory();
+  }
+
+  if (command === "ls") {
+    printListOfFiles();
   }
 });
