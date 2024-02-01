@@ -23,6 +23,13 @@ import {
   removeFile,
   renameFile,
 } from "./modules/readFile.js";
+import {
+  showArchitecture,
+  showCpu,
+  showEOL,
+  showHomeDir,
+  showUserName,
+} from "./modules/os.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -52,7 +59,7 @@ stdin.on("data", (data) => {
     .split(" ")
     .filter((el) => el !== "")
     .map((el) => el.trim());
-
+  //directory operations
   if (command === "up") {
     goUpper();
     showCurrentDirectory();
@@ -65,11 +72,10 @@ stdin.on("data", (data) => {
   if (command === "ls") {
     printListOfFiles();
   }
-
+  // file operations
   if (command === "cat") {
     printFileContent(arg1);
   }
-
   if (command === "add") {
     createEmptyFile(arg1);
   }
@@ -84,5 +90,23 @@ stdin.on("data", (data) => {
   }
   if (command === "mv") {
     moveFile(arg1, arg2);
+  }
+  //os operations
+  if (command === "os") {
+    if (arg1 === "--EOL") {
+      showEOL();
+    }
+    if (arg1 === "--cpus") {
+      showCpu();
+    }
+    if (arg1 === "--homedir") {
+      showHomeDir();
+    }
+    if (arg1 === "--username") {
+      showUserName();
+    }
+    if (arg1 === "--architecture") {
+      showArchitecture();
+    }
   }
 });
