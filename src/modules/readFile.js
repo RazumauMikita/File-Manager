@@ -1,5 +1,6 @@
 import { open, writeFile, rename, rm } from "node:fs/promises";
 import { stdout, cwd } from "node:process";
+import { showErrorMessage } from "./messages.js";
 
 export const printFileContent = async (path) => {
   try {
@@ -7,7 +8,7 @@ export const printFileContent = async (path) => {
     const readStream = file.createReadStream();
     readStream.pipe(stdout);
   } catch {
-    console.log("Error read file");
+    showErrorMessage();
   }
 };
 
@@ -15,7 +16,7 @@ export const createEmptyFile = async (newFileName) => {
   try {
     await writeFile(newFileName, "", { flag: "w" });
   } catch {
-    console.log("Error create file");
+    showErrorMessage();
   }
 };
 
@@ -23,7 +24,7 @@ export const renameFile = async (oldPath, newPath) => {
   try {
     await rename(oldPath, newPath);
   } catch {
-    console.log("Error rename file");
+    showErrorMessage();
   }
 };
 
@@ -31,7 +32,7 @@ export const removeFile = async (pathToFile) => {
   try {
     await rm(pathToFile);
   } catch {
-    console.log("Error remove file");
+    showErrorMessage();
   }
 };
 
@@ -43,7 +44,7 @@ export const copyFile = async (filePath, newDirPath) => {
     const writeStream = newFile.createWriteStream();
     readStream.pipe(writeStream);
   } catch {
-    console.log("Error copy file");
+    showErrorMessage();
   }
 };
 
@@ -58,6 +59,6 @@ export const moveFile = async (filePath, newDirPath) => {
       removeFile(filePath);
     });
   } catch {
-    console.log("Error move file");
+    showErrorMessage();
   }
 };

@@ -1,5 +1,6 @@
 import zlib from "node:zlib";
 import { open } from "node:fs/promises";
+import { showErrorMessage } from "./messages.js";
 
 export const compressFile = async (pathToFile, pathToDestination) => {
   try {
@@ -8,11 +9,11 @@ export const compressFile = async (pathToFile, pathToDestination) => {
 
     const writeStream = newFile.createWriteStream();
     const readStream = file.createReadStream();
-    const gzip = zlib.createGzip();
+    const gzip = zlib.createBrotliCompress();
 
     readStream.pipe(gzip).pipe(writeStream);
   } catch {
-    process.stdout.write("Operation fail.\n");
+    showErrorMessage();
   }
 };
 
@@ -23,10 +24,10 @@ export const decompressFile = async (pathToFile, pathToDestination) => {
 
     const writeStream = newFile.createWriteStream();
     const readStream = file.createReadStream();
-    const unzip = zlib.createUnzip();
+    const unzip = zlib.createBrotliDecompress();
 
     readStream.pipe(unzip).pipe(writeStream);
   } catch {
-    process.stdout.write("Operation fail.\n");
+    showErrorMessage();
   }
 };
