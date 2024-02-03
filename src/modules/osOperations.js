@@ -1,8 +1,8 @@
-import { EOL, cpus, homedir, userInfo, arch } from "node:os";
-import { stdout } from "node:process";
+import { EOL, cpus, homedir, userInfo, arch } from "os";
+import { stdout } from "process";
 
 export const showEOL = () => {
-  stdout.write(EOL);
+  stdout.write(JSON.stringify(EOL) + "\n");
 };
 export const showCpu = () => {
   const amountCPU = cpus().length;
@@ -10,15 +10,12 @@ export const showCpu = () => {
   console.table(cpus(), ["model"]);
 };
 export const showHomeDir = () => {
-  stdout.write(homedir());
-  showEOL();
+  stdout.write(homedir() + "\n");
 };
 export const showUserName = () => {
   const username = userInfo().username;
-  stdout.write(username);
-  showEOL();
+  stdout.write(username + "\n");
 };
 export const showArchitecture = () => {
-  stdout.write(arch());
-  showEOL();
+  stdout.write(arch() + "\n");
 };

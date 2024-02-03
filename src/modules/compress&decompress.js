@@ -1,6 +1,7 @@
-import zlib from "node:zlib";
-import { open } from "node:fs/promises";
-import { showErrorMessage } from "../messages.js";
+import zlib from "zlib";
+import { open } from "fs/promises";
+
+import { showErrorMessage } from "./messages.js";
 
 export const compressFile = async (pathToFile, pathToDestination) => {
   try {

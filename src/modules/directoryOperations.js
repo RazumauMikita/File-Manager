@@ -1,6 +1,7 @@
-import { cwd, chdir } from "node:process";
-import { readdir } from "node:fs/promises";
-import { homedir } from "node:os";
+import { cwd, chdir } from "process";
+import { readdir } from "fs/promises";
+import { homedir } from "os";
+
 import { showErrorMessage } from "./messages.js";
 
 export const goToHomeDir = () => {

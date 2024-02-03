@@ -1,4 +1,4 @@
-import { stdout, cwd } from "node:process";
+import { stdout, cwd } from "process";
 
 export const showGreetingPhrase = (username) => {
   stdout.write(`> Welcome to the File Manager, ${username}!\n`);

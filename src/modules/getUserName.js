@@ -1,4 +1,5 @@
-import { argv } from "node:process";
+import { argv } from "process";
+
 import { showErrorMessage } from "./messages.js";
 
 export const getUsername = () => {

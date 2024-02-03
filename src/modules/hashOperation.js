@@ -1,6 +1,7 @@
-import { open } from "node:fs/promises";
-import crypto from "node:crypto";
-import { showErrorMessage } from "./messages.js";
+import { open } from "fs/promises";
+import crypto from "crypto";
+
+import { showCurrentDirectory, showErrorMessage } from "./messages.js";
 
 export const showFileHash = async (pathToFile) => {
   try {
@@ -17,6 +18,9 @@ export const showFileHash = async (pathToFile) => {
 
         process.stdout.write(hex + "\n");
       }
+    });
+    readableStream.on("end", () => {
+      showCurrentDirectory();
     });
   } catch {
     showErrorMessage();

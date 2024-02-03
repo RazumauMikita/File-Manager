@@ -1,18 +1,25 @@
-import { open, writeFile, rename, rm } from "node:fs/promises";
-import { stdout } from "node:process";
+import { open, writeFile, rename, rm } from "fs/promises";
+import { stdout } from "process";
+
 import { showErrorMessage } from "./messages.js";
 
 export const printFileContent = async (path) => {
-  try {
-    const file = await open(path);
-    const readStream = file.createReadStream();
-    readStream.pipe(stdout);
-    readStream.on("end", () => {
-      stdout.write("\n");
-    });
-  } catch {
-    showErrorMessage();
-  }
+  return new Promise(async (resolve) => {
+    let file;
+    try {
+      file = await open(path);
+      const readStream = file.createReadStream();
+      readStream.pipe(stdout);
+      readStream.on("end", () => {
+        file.close();
+        stdout.write("\n");
+        resolve();
+      });
+    } catch {
+      file?.close();
+      showErrorMessage();
+    }
+  });
 };
 
 export const createEmptyFile = async (newFileName) => {

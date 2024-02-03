@@ -1,3 +1,11 @@
+import { stdin, stdout } from "process";
+import readline from "readline/promises";
+
+import { showCurrentDirectory, showGoodbyePhrase } from "./messages.js";
+import { showFileHash } from "./hashOperation.js";
+import { compressFile, decompressFile } from "./compress&decompress.js";
+import { getUsername } from "./getUserName.js";
+import { COMMANDS, OS_FLAGS } from "./commands.js";
 import {
   goToDedicated,
   goUpper,
@@ -18,50 +26,13 @@ import {
   showHomeDir,
   showUserName,
 } from "./osOperations.js";
-import { showCurrentDirectory, showGoodbyePhrase } from "./messages.js";
-import { stdin } from "node:process";
-
-import * as readline from "node:readline/promises";
-import { showFileHash } from "./hashOperation.js";
-import { compressFile, decompressFile } from "./compress/decompress.js";
-import { getUsername } from "./getUserName.js";
-
-const COMMANDS = {
-  EXIT: ".exit",
-  GO_UP: "up",
-  CHANGE_DIR: "cd",
-  LIST_OF_FILES: "ls",
-  PRINT_CONTENT: "cat",
-  CREATE_FILE: "add",
-  RENAME_FILE: "rn",
-  REMOVE_FILE: "rm",
-  COPY_FILE: "cp",
-  MOVE_FILE: "mv",
-  OPERATION_SYSTEM: "os",
-  COMPRESS_FILE: "compress",
-  DECOMPRESS_FILE: "decompress",
-  SHOW_HASH: "hash",
-};
-
-const OS_FLAGS = {
-  SHOW_EOL: "--EOL",
-  SHOW_CPU: "--cpus",
-  SHOW_HOMEDIR: "--homedir",
-  SHOW_USERNAME: "--username",
-  SHOW_ARCH: "--architecture",
-};
 
 const USERNAME = getUsername();
 
 export const commandListener = () => {
-  const rl = readline.createInterface(stdin);
+  const rl = readline.createInterface(stdin, stdout);
 
-  process.on("SIGINT", () => {
-    showGoodbyePhrase(USERNAME);
-    process.exit();
-  });
-
-  rl.on("line", (input) => {
+  rl.on("line", async (input) => {
     const dataString = input.trim();
     const [command, arg1, arg2] = dataString
       .split(" ")
@@ -78,31 +49,31 @@ export const commandListener = () => {
         showCurrentDirectory();
         break;
       case COMMANDS.LIST_OF_FILES:
-        printListOfFiles();
+        await printListOfFiles();
         showCurrentDirectory();
         break;
       case COMMANDS.PRINT_CONTENT:
-        printFileContent(arg1);
+        await printFileContent(arg1);
         showCurrentDirectory();
         break;
       case COMMANDS.CREATE_FILE:
-        createEmptyFile(arg1);
+        await createEmptyFile(arg1);
         showCurrentDirectory();
         break;
       case COMMANDS.RENAME_FILE:
-        renameFile(arg1, arg2);
+        await renameFile(arg1, arg2);
         showCurrentDirectory();
         break;
       case COMMANDS.REMOVE_FILE:
-        removeFile(arg1);
+        await removeFile(arg1);
         showCurrentDirectory();
         break;
       case COMMANDS.COPY_FILE:
-        copyFile(arg1, arg2);
+        await copyFile(arg1, arg2);
         showCurrentDirectory();
         break;
       case COMMANDS.MOVE_FILE:
-        moveFile(arg1, arg2);
+        await moveFile(arg1, arg2);
         showCurrentDirectory();
         break;
       case COMMANDS.OPERATION_SYSTEM:
@@ -130,20 +101,25 @@ export const commandListener = () => {
         }
         break;
       case COMMANDS.SHOW_HASH:
-        showFileHash(arg1);
-        showCurrentDirectory();
+        await showFileHash(arg1);
+
         break;
       case COMMANDS.COMPRESS_FILE:
-        compressFile(arg1, arg2);
+        await compressFile(arg1, arg2);
         showCurrentDirectory();
         break;
       case COMMANDS.DECOMPRESS_FILE:
-        decompressFile(arg1, arg2);
+        await decompressFile(arg1, arg2);
         showCurrentDirectory();
         break;
       case COMMANDS.EXIT:
         showGoodbyePhrase(USERNAME);
-        process.exit();
+        rl.close();
     }
+  });
+
+  rl.on("SIGINT", () => {
+    showGoodbyePhrase(USERNAME);
+    rl.close();
   });
 };
