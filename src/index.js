@@ -30,6 +30,7 @@ import {
   showHomeDir,
   showUserName,
 } from "./modules/os.js";
+import { compressFile, decompressFile } from "./modules/compress.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -108,5 +109,13 @@ stdin.on("data", (data) => {
     if (arg1 === "--architecture") {
       showArchitecture();
     }
+  }
+
+  //compress/decompress
+  if (command === "compress") {
+    compressFile(arg1, arg2);
+  }
+  if (command === "decompress") {
+    decompressFile(arg1, arg2);
   }
 });
