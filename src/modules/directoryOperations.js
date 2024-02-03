@@ -1,4 +1,4 @@
-import { stdout, cwd, chdir } from "node:process";
+import { cwd, chdir } from "node:process";
 import { readdir } from "node:fs/promises";
 import { homedir } from "node:os";
 import { showErrorMessage } from "./messages.js";
@@ -13,6 +13,7 @@ export const goToHomeDir = () => {
 
 export const goUpper = () => {
   try {
+    if (cwd() === homedir()) return;
     const [, folders] = cwd().split(":");
     const currentDir = folders.split("\\");
     const isRootDir = currentDir.length === 1 ? true : false;

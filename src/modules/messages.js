@@ -1,16 +1,17 @@
 import { stdout, cwd } from "node:process";
 
 export const showGreetingPhrase = (username) => {
-  stdout.write(`Welcome to the File Manager, ${username}!\n`);
+  stdout.write(`> Welcome to the File Manager, ${username}!\n`);
 };
 
 export const showGoodbyePhrase = (username) =>
-  stdout.write(`Thank you for using File Manager, ${username}, goodbye!\n`);
+  stdout.write(`> Thank you for using File Manager, ${username}, goodbye!\n`);
 
 export const showCurrentDirectory = () => {
-  stdout.write(`You are currently in ${cwd()}\n`);
+  const currentDirectory = cwd();
+  stdout.write(`> You are currently in ${currentDirectory}\n`);
 };
 
 export const showErrorMessage = () => {
-  stdout.write(`Operation fail.\n`);
+  stdout.write(`> Operation fail.\n`);
 };

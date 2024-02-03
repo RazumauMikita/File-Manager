@@ -5,14 +5,20 @@ export const showEOL = () => {
   stdout.write(EOL);
 };
 export const showCpu = () => {
+  const amountCPU = cpus().length;
+  stdout.write(`Amount of CPUs: ${amountCPU}\n`);
   console.table(cpus(), ["model"]);
 };
 export const showHomeDir = () => {
-  stdout.write(homedir() + "n\\");
+  stdout.write(homedir());
+  showEOL();
 };
 export const showUserName = () => {
-  stdout.write(userInfo().username + "n\\");
+  const username = userInfo().username;
+  stdout.write(username);
+  showEOL();
 };
 export const showArchitecture = () => {
-  stdout.write(arch() + "n\\");
+  stdout.write(arch());
+  showEOL();
 };

@@ -1,5 +1,5 @@
 import { open, writeFile, rename, rm } from "node:fs/promises";
-import { stdout, cwd } from "node:process";
+import { stdout } from "node:process";
 import { showErrorMessage } from "./messages.js";
 
 export const printFileContent = async (path) => {
@@ -7,6 +7,9 @@ export const printFileContent = async (path) => {
     const file = await open(path);
     const readStream = file.createReadStream();
     readStream.pipe(stdout);
+    readStream.on("end", () => {
+      stdout.write("\n");
+    });
   } catch {
     showErrorMessage();
   }
