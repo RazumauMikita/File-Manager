@@ -31,6 +31,7 @@ import {
   showUserName,
 } from "./modules/os.js";
 import { compressFile, decompressFile } from "./modules/compress.js";
+import { showFileHash } from "./modules/hash.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -117,5 +118,11 @@ stdin.on("data", (data) => {
   }
   if (command === "decompress") {
     decompressFile(arg1, arg2);
+  }
+
+  //hash
+
+  if (command === "hash") {
+    showFileHash(arg1);
   }
 });

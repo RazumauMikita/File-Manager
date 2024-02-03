@@ -23,8 +23,8 @@ export const decompressFile = async (pathToFile, pathToDestination) => {
 
     const writeStream = newFile.createWriteStream();
     const readStream = file.createReadStream();
-
     const unzip = zlib.createUnzip();
+
     readStream.pipe(unzip).pipe(writeStream);
   } catch {
     process.stdout.write("Operation fail.\n");
