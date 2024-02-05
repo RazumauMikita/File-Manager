@@ -6,39 +6,40 @@ import { showErrorMessage } from "./messages.js";
 import { pipeline } from "stream/promises";
 
 export const compressFile = async (pathToFile, pathToDestination) => {
+  let file, newFile;
   try {
     const fileName = path.basename(pathToFile);
-    const file = await open(pathToFile);
-    const newFile = await open(
-      path.join(pathToDestination, fileName + ".br"),
-      "w"
-    );
+    file = await open(pathToFile);
+    newFile = await open(path.join(pathToDestination, fileName + ".br"), "w");
 
     const writeStream = newFile.createWriteStream();
     const readStream = file.createReadStream();
     const gzip = zlib.createBrotliCompress();
 
     await pipeline(readStream, gzip, writeStream);
-    file.close();
-    newFile.close();
   } catch {
     showErrorMessage();
+  } finally {
+    file?.close();
+    newFile?.close();
   }
 };
 
 export const decompressFile = async (pathToFile, pathToDestination) => {
+  let file, newFile;
   try {
     const fileName = path.basename(pathToFile).replace(".br", "");
-    const file = await open(pathToFile);
-    const newFile = await open(path.join(pathToDestination, fileName), "w");
+    file = await open(pathToFile);
+    newFile = await open(path.join(pathToDestination, fileName), "w");
 
     const writeStream = newFile.createWriteStream();
     const readStream = file.createReadStream();
     const unzip = zlib.createBrotliDecompress();
     await pipeline(readStream, unzip, writeStream);
-    file.close();
-    newFile.close();
   } catch {
     showErrorMessage();
+  } finally {
+    file?.close();
+    newFile?.close();
   }
 };

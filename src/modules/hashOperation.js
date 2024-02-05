@@ -4,8 +4,9 @@ import crypto from "crypto";
 import { showCurrentDirectory, showErrorMessage } from "./messages.js";
 
 export const showFileHash = async (pathToFile) => {
+  let file;
   try {
-    const file = await open(pathToFile);
+    file = await open(pathToFile);
     const readableStream = file.createReadStream();
 
     readableStream.on("readable", () => {
@@ -20,9 +21,11 @@ export const showFileHash = async (pathToFile) => {
       }
     });
     readableStream.on("end", () => {
+      file?.close();
       showCurrentDirectory();
     });
   } catch {
+    file?.close();
     showErrorMessage();
   }
 };

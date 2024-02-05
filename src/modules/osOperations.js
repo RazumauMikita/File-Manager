@@ -5,9 +5,11 @@ export const showEOL = () => {
   stdout.write(JSON.stringify(EOL) + "\n");
 };
 export const showCpu = () => {
-  const amountCPU = cpus().length;
+  const cpu = cpus();
+  const amountCPU = cpu.length;
   stdout.write(`Amount of CPUs: ${amountCPU}\n`);
-  console.table(cpus(), ["model"]);
+
+  console.table(cpu, ["model", "speed"]);
 };
 export const showHomeDir = () => {
   stdout.write(homedir() + "\n");

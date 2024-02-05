@@ -2,6 +2,7 @@ import { cwd, chdir } from "process";
 import { readdir } from "fs/promises";
 import { homedir } from "os";
 import { resolve, parse } from "path";
+
 import { showErrorMessage } from "./messages.js";
 
 export const goToHomeDir = () => {
@@ -14,7 +15,7 @@ export const goToHomeDir = () => {
 
 export const goUpper = () => {
   try {
-    const { dir, root } = parse(cwd());
+    const { root } = parse(cwd());
     const [, folders] = cwd().split(":");
     const currentDir = folders.split("\\");
 
@@ -38,8 +39,9 @@ export const goToDedicated = (path) => {
     const { root, dir } = parse(cwd());
 
     const { root: aimRoot } = parse(resolve(path));
+
     if (root !== aimRoot) {
-      chdir(resolve(path));
+      chdir(resolve(path + "/"));
       return;
     }
     chdir(path);
