@@ -19,6 +19,8 @@ export const compressFile = async (pathToFile, pathToDestination) => {
     const gzip = zlib.createBrotliCompress();
 
     await pipeline(readStream, gzip, writeStream);
+    file.close();
+    newFile.close();
   } catch {
     showErrorMessage();
   }
@@ -34,6 +36,8 @@ export const decompressFile = async (pathToFile, pathToDestination) => {
     const readStream = file.createReadStream();
     const unzip = zlib.createBrotliDecompress();
     await pipeline(readStream, unzip, writeStream);
+    file.close();
+    newFile.close();
   } catch {
     showErrorMessage();
   }
