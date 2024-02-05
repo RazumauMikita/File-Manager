@@ -1,5 +1,6 @@
 import { open, writeFile, rename, rm } from "fs/promises";
 import { stdout } from "process";
+import path from "path";
 
 import { showErrorMessage } from "./messages.js";
 
@@ -46,29 +47,43 @@ export const removeFile = async (pathToFile) => {
   }
 };
 
-export const copyFile = async (filePath, newDirPath) => {
+export const copyFile = async (pathToFile, pathToNewDirectory) => {
+  let file, newFile;
   try {
-    const file = await open(filePath);
-    const newFile = await open(newDirPath, "w");
+    const fileName = path.basename(pathToFile);
+    file = await open(pathToFile);
+    newFile = await open(path.join(pathToNewDirectory, fileName), "w");
     const readStream = file.createReadStream();
     const writeStream = newFile.createWriteStream();
-    readStream.pipe(writeStream);
+    const stream = readStream.pipe(writeStream);
+    stream.on("end", () => {
+      file.close();
+      newFile.close();
+    });
   } catch {
+    file?.close();
+    newFile?.close();
     showErrorMessage();
   }
 };
 
-export const moveFile = async (filePath, newDirPath) => {
+export const moveFile = async (pathToFile, pathToNewDirectory) => {
+  let file, newFile;
   try {
-    const file = await open(filePath);
-    const newFile = await open(newDirPath, "w");
+    const fileName = path.basename(pathToFile);
+    file = await open(pathToFile);
+    newFile = await open(path.join(pathToNewDirectory, fileName), "w");
     const readStream = file.createReadStream();
     const writeStream = newFile.createWriteStream();
     readStream.pipe(writeStream);
     readStream.on("end", () => {
-      removeFile(filePath);
+      file.close();
+      newFile.close();
+      removeFile(pathToFile);
     });
   } catch {
+    file?.close();
+    newFile?.close();
     showErrorMessage();
   }
 };
